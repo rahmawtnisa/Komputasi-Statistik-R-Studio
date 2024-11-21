@@ -1,0 +1,193 @@
+---
+title: "UTS"
+author: "Rahmawati Annisa Salsadilla - 11180940000005"
+date: "4/11/2020"
+output: pdf_document
+---
+
+## Bagian 1
+
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+data(diamonds)
+head(diamonds)
+```
+
+## Berapa proporsi diamond yang berwarna E ?
+
+```{r}
+data(diamonds)
+diamonds
+filter(diamonds, color == "E")
+jumlah_diamond <- 53940
+jumlah_warna_E <- 9797
+proporsi <- (jumlah_warna_E/jumlah_diamond)*100
+proporsi
+```
+
+## untuk 5 potong premium dengan harga tertinggi. berapa rata-rata volume diamond dimana volume diamond didefinisikan sebagai length(x)*width(y)*depth(z)?
+
+
+```{r}
+pilih_diamond <- select(diamonds, cut, price, x, y, z)
+filter_diamond <- filter(pilih_diamond, cut == "Premium")
+urutan_diamond <- arrange(filter_diamond, desc(price))[1:5,]
+mutate(urutan_diamond, volume=x*y*z, ratarata=mean(volume, na.rm=T))
+
+```
+
+## untuk diamond dengan kejernihan(clarity) terburuk dengan warna terburuk (I atau J) tampilkan distribusi harganya dalam bentuk histogram ?
+
+```{r}
+pilih_diamond <- select(diamonds, clarity, color, price)
+diamond <- filter(pilih_diamond, clarity == "I1", color == "I"|color == "J")
+ggplot(data = diamond) +
+  geom_histogram(mapping=aes(x = price, fill =  color), binwidth=4000)
+```
+
+## untuk diamond dengan kejernihan(clarity) terburuk dengan warna terburuk (I atau J), hitung rata-rata harganya
+
+
+```{r}
+pilih_diamond <- select(diamonds, clarity, color, price)
+diamond <- filter(pilih_diamond, clarity == "I1", color == "I"|color == "J")
+harga <- (diamond$price)
+summarize(diamonds, price = mean(harga, na.rm = T))
+```
+
+## Berapa banyak potongan diamond fair?
+
+
+```{r}
+diamond_fair <- filter(diamonds, cut == "Fair")
+diamond_fair
+```
+
+## berapa harga untuk diamond dengan carat tertinggi ?
+
+```{r}
+harga <- arrange(diamonds, desc(carat))
+harga
+```
+
+## berapa harga terendah untuk potongan diamond ideal ?
+
+```{r}
+diamond_ideal <- filter(diamonds, cut == "Ideal")
+diamond_ideal
+```
+
+
+## BAGIAN 2
+
+1. $P(X < 0.818)=$
+
+```{r}
+pt(0.818, df = 28)
+```
+
+2. $P(X > 1.176)=$
+
+```{r}
+1 - pt(1.176, df = 28)
+```
+
+3. $P(-1.034< X < 0.031)=$
+
+```{r}
+pt(0.031, df = 28)-pt(-1.034, df = 28)
+```
+
+4. tentukan titik pada distribusi $X$ yang membagi distribusi menjadi dua bagian dimana proporsi distribusi sebelah kiri adalah $0.25$ dan sebelah kanan adalah $0.75$
+$P(0.25<X<0.75)$
+
+
+```{r}
+pt(0.75, df = 28)-pt(0.25, df = 28)
+```
+
+
+## BAGIAN 3
+
+tuliskan algoritma dengan menggunakan metode inverse transform untuk membangkitkan bilangan acak dengan fungsi peluang (pdf) sebagai berikut:
+\[
+f(x) = 2x/(1+X^2)^2,  0 {\le} x < {\infty}
+\]
+
+tahap 1. menurunkan fungsi CDF
+
+$F(x) = \int \limits_{0}^{x}{f(t)} \, dt$
+
+$F(x) = \int \limits_{0}^{x}{\frac{2t}{(1+t^2)^2}} \, dt$
+
+$= -\frac{1}{1+t^2} \Bigr|_{0}^{x}$
+
+$=-\frac{1}{1+x^2}-(-\frac{1}{1+0^2})$
+
+$=-\frac{1}{1+x^2}+\frac{1}{1}$
+
+$=1 -\frac{1}{1+x^2}$
+
+disederhanakan
+
+$=\frac{1+x^2-1}{1+x^2}$
+
+$=\frac{x^2}{1+x^2}$
+
+tahap 2. invers dari CDF
+
+$y =\frac{x^2}{1+x^2}$
+
+$y (1+x^2)={x^2}$
+
+$y + yx^2={x^2}$
+
+$y ={x^2} -  yx^2$
+
+$y = (1-y)x^2$
+
+$x^2 = \frac{y}{(1-y)}$
+
+$x = \sqrt \frac{y}{1-y}$
+
+tahap 3. bangkitkan data
+
+```{r}
+n <- 10000 # banyaknya data pengamatan
+set.seed(005)
+y <- runif(n)
+```
+
+tahap 4. bangkitkan bilangan acak
+
+```{r}
+set.seed(005)
+x <- (sqrt(y/(1-y)))
+head(x)
+```
+
+1. Plot hasil bangkitan bilangan acak dengan menggunakan histogram
+
+$\text{5.}$ Plot histogram
+```{r}
+par(mfrow=c(1,2)) 
+hist(x,main="Histogram dari Inverse Transform")
+
+```
+
+2. estimasi berapa $var(X)$?
+
+```{r}
+var(x)
+```
+
+3. estimasi berapa $E(X)$ ?
+
+```{r}
+mean(x)
+```
+
+
+
