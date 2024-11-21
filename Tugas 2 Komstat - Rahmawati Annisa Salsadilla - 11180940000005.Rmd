@@ -1,0 +1,96 @@
+---
+title: "Tugas 2"
+author: "Rahmawati Annisa Salsadilla - 11180940000005"
+date: "23/9/2020"
+output: pdf_document
+---
+
+Tuliskan kode R yang bersesuaian untuk menampilkan masing-masing plot berikut ini
+dengan menggunakan data(mpg).
+
+```{r}
+library(ggplot2)
+```
+
+## Nomor 1
+
+```{r}
+ggplot(data=mpg, mapping=aes(x=displ, y=hwy )) + 
+  geom_point(size=5) +
+  geom_smooth(se=FALSE, size=3)
+```
+
+## Nomor 2
+
+```{r}
+
+ggplot(data=mpg, mapping=aes(x=displ, y=hwy, line=drv)) + 
+  geom_smooth(se=FALSE, size=3) +
+  geom_point(size=5)
+  
+```
+
+## Nomor 3
+
+```{r}
+ggplot(data=mpg, mapping=aes(x=displ, y=hwy, color=drv )) + 
+  geom_point(size=6 ) +
+  geom_smooth(se=FALSE, size=3)
+```
+
+## Nomor 4
+
+```{r}
+ggplot(data=mpg, mapping=aes(x=displ, y=hwy, color=drv )) + 
+  geom_point( size=6) +
+  geom_smooth(se=FALSE,color="blue", size=3)
+```
+
+## Nomor 5
+
+```{r}
+ggplot(data=mpg, mapping=aes(x=displ, y=hwy, color=drv, linetype=drv )) + 
+  geom_point(size=6) +
+  geom_smooth(se=FALSE, color="blue", size=3)
+```
+
+## Nomor 6
+Buat scatterplot antara ’cty’ di sumbu x dan ’hwy’ di sumbu y.
+
+```{r}
+ggplot(data=mpg) + 
+  geom_point(mapping = aes(x=cty, y=hwy))
+```
+
+## Nomor 7
+Warnai titik pada scatterplot di nomor 6 dengan warna biru.
+
+```{r}
+ggplot(data=mpg) + 
+  geom_point(mapping = aes(x=cty, y=hwy), color="blue")
+```
+
+## Nomor 8
+Warnai titik pada scatterplot di nomor 6 berdasarkan banyaknya silinder (‘cyl’).
+
+```{r}
+ggplot(data=mpg, mapping=aes(x=cty, y=hwy)) + 
+  geom_point(aes(color = cyl))
+```
+
+## Nomor 9
+Buat titik pada scatterplot di nomor 8 dengan ukurang yang lebih besar, yaitu size = 3
+
+```{r}
+ggplot(data=mpg, mapping = aes(x=cty, y=hwy)) + 
+  geom_point(aes(color = cyl), size=3)
+```
+
+## Nomor 10
+Tambahkan garis yang diperhalus pada scatterplot nomor 6.
+
+```{r}
+ggplot(data=mpg, mapping = aes(x=cty, y=hwy)) + 
+  geom_point(aes(color = cyl), size=3) +
+  geom_smooth(se=FALSE)
+```
